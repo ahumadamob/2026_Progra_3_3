@@ -19,14 +19,19 @@ public class ConsultaService {
 		return repo.findById(id).orElse(null);
 	}
 	
-	public void create(Consulta consulta){
-		repo.save(consulta);
+	public Consulta create(Consulta consulta){
+		return repo.save(consulta);
 		
 	}
 	
-	public void update(Consulta consulta, Long id) {
-		consulta.setId(id);
-		repo.save(consulta);
+	public Consulta update(Consulta consulta, Long id) {
+		Consulta actualizarConsulta = this.getById(id);
+		if(actualizarConsulta == null) {
+			return null;
+		}else {
+			consulta.setId(id);
+			return repo.save(consulta);
+		}	
 		
 	}
 	
