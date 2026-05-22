@@ -19,13 +19,18 @@ public class CompraInsumoService {
 		return repo.findById(id).orElse(null);
 	}
 	
-	public void create(CompraInsumo compraInsumo) {
-		repo.save(compraInsumo);
+	public CompraInsumo create(CompraInsumo compraInsumo) {
+		return repo.save(compraInsumo);
 	}
 	
-	public void update(CompraInsumo compraInsumo, Long id) {
-		compraInsumo.setId(id);
-		repo.save(compraInsumo);
+	public CompraInsumo update(CompraInsumo compraInsumo, Long id) {
+		CompraInsumo actualizarCompraInsumo = this.getById(id);
+		if(actualizarCompraInsumo == null) {
+			return null;
+		}else {
+			compraInsumo.setId(id);
+			return repo.save(compraInsumo);
+		}
 	}
 	
 	public void delete(Long id) {
