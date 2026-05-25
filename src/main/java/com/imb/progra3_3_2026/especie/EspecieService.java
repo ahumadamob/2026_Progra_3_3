@@ -3,8 +3,9 @@ package com.imb.progra3_3_2026.especie;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class EspecieService {
 	
 	@Autowired
@@ -18,13 +19,18 @@ public class EspecieService {
 		return repo.findById(id).orElse(null);
 	}
 	
-	public void create(Especie especie) {
-		repo.save(especie);
+	public Especie create(Especie especie) {
+		return repo.save(especie);
 	}
 	
-	public void update(Especie especie,Long id) {
+	public Especie update(Especie especie,Long id) {
+		Especie actualizarEspecie = this.getById(id);
+		if(actualizarEspecie == null) {
+			return null;
+		}else{
 		especie.setId(id);
-		repo.save(especie);
+		return repo.save(especie);
+		}
 	}
 	
 	public void delete(Long id) {
