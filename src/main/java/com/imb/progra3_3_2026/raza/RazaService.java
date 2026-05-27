@@ -19,13 +19,19 @@ public class RazaService {
 		return repo.findById(id).orElse(null);
 	}
 	
-	public void create(Raza raza) {
-		repo.save(raza);
+	public Raza create(Raza raza) {
+		return repo.save(raza);
 	}
 	
-	public void update(Raza raza, Long id) {
-		raza.setId(id);
-		repo.save(raza);
+	public Raza update(Raza raza, Long id) {
+		Raza actualizarRaza = this.getById(id);
+		if(actualizarRaza == null) {
+			return null;
+		}else {
+			raza.setId(id);
+			return repo.save(raza);
+		}	
+		
 	}
 	
 	public void delete(Long id){
