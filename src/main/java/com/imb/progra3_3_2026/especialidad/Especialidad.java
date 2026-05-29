@@ -21,14 +21,6 @@ public class Especialidad {
 
 	}
 
-	public Especialidad(String nombre, String descripcion, String areaClinica, boolean requiereMatriculaEspecial) {
-		super();
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.areaClinica = areaClinica;
-		this.requiereMatriculaEspecial = requiereMatriculaEspecial;
-	}
-
 	public Long getId() {
 		return id;
 	}
