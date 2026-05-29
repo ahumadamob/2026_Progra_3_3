@@ -41,9 +41,5 @@ public class MedicamentoController {
 		service.delete(id);
 	}
 	
-	
-	
-	
-	
 
 }

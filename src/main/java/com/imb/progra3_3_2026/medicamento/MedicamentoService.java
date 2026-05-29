@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class MedicamentoService {
 	
 	@Autowired
-	private medicamentoRepository repo;
+	private MedicamentoRepository repo;
 	
 	public List <Medicamento> getAll(){
 		return repo.findAll();
