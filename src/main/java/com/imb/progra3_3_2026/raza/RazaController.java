@@ -41,9 +41,9 @@ public class RazaController {
 		return service.update(raza, id);
 	}	
 	
-	// Eliminar consulta
-	@DeleteMapping("/consultas/{id}")
-	public void borrarConsultaPorId(@PathVariable Long id) {
+	// Eliminar razas
+	@DeleteMapping("/razas/{id}")
+	public void borrarRazaPorId(@PathVariable Long id) {
 		service.delete(id);
 	}
 }
