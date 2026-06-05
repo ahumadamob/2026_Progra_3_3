@@ -37,8 +37,8 @@ public class ServicioController {
         return service.update(servicio, id);
     }
 
-    @DeleteMapping("/consultas/{id}")
-    public void borrarConsultaPorId(@PathVariable Long id) {
+    @DeleteMapping("/servicios/{id}")
+    public void borrarServicioPorId(@PathVariable Long id) {
         service.delete(id);
     }
 }
