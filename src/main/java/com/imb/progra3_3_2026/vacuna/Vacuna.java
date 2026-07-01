@@ -1,9 +1,12 @@
 package com.imb.progra3_3_2026.vacuna;
 
+import com.imb.progra3_3_2026.especie.Especie;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Vacuna {
@@ -13,7 +16,10 @@ public class Vacuna {
     private Long id;
 
     private String nombre;
-    private String especie;
+    
+    @ManyToOne
+    private Especie especie;
+    
     private String laboratorio;
     private Integer edadRecomendadaMeses;
     private Boolean refuerzoAnual;
@@ -33,11 +39,11 @@ public class Vacuna {
         this.nombre = nombre;
     }
 
-    public String getEspecie() {
+    public Especie getEspecie() {
         return especie;
     }
 
-    public void setEspecie(String especie) {
+    public void setEspecie(Especie especie) {
         this.especie = especie;
     }
 
