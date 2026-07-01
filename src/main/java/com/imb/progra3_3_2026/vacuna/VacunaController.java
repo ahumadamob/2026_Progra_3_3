@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/vacunas")
@@ -27,16 +26,15 @@ public class VacunaController {
     	
     }
 
-    @GetMapping("/{id}") 
-    public ResponseEntity <Optional<Vacuna>> getById(@PathVariable Long id) { 
-    	Optional<Vacuna> vacuna = vacunaService.getById(id); 
-    	
-    	if (vacuna == null ) { 
-    		return ResponseEntity.notFound().build(); 
-    	}else { 
-    		return ResponseEntity.ok(vacuna); 
-    
-    } }
+    @GetMapping("/vacuna")
+	public ResponseEntity <List<Vacuna>> buscarTratamiento(){
+		List<Vacuna> listaVacunas = vacunaService.getAll();
+		if (listaVacunas.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.ok(listaVacunas);
+		}
+	}
 
     @PostMapping
     public ResponseEntity<Vacuna> create(@RequestBody Vacuna vacuna) {
@@ -44,16 +42,20 @@ public class VacunaController {
         return ResponseEntity.ok(nuevaVacuna);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Vacuna> update(@PathVariable Long id, @RequestBody Vacuna vacuna) {
-        Vacuna vacunaActualizada = vacunaService.update(id, vacuna);
-
-        if (vacunaActualizada == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(vacunaActualizada);
-    }
+    @PutMapping("/vacuna/{id}")
+	public ResponseEntity <Vacuna> actualizarVacuna(@PathVariable Long id, @RequestBody Vacuna vacuna ) {
+    	Vacuna vacunaDesdeServicio = vacunaService.getById(id);
+		if (vacunaDesdeServicio == null) {
+			return ResponseEntity.notFound().build();
+		} else {
+			try {
+				Vacuna actualizarVacuna = vacunaService.update(vacuna, id);
+			} catch (Exception e) {
+				return ResponseEntity.badRequest().build();
+			}
+		}
+		return null;
+	}
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
