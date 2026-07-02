@@ -36,4 +36,6 @@ public class FacturaService {
 	public void delete(Long id) {
 		repo.deleteById(id);
 	}
+
+	
 }

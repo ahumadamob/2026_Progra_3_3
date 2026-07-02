@@ -3,6 +3,7 @@ package com.imb.progra3_3_2026.factura;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,11 @@ public class FacturaController {
 	@Autowired
 	private FacturaService service;
 	
-	// Recuperar todas
-	@GetMapping("/factura")
+
+  
+	
+	// Muestra todas las facturas
+	@GetMapping("/facturas")
 	public ResponseEntity<List<Factura>> buscarFactura(){
 		
 		List<Factura> listaFactura = service.getAll();
@@ -32,7 +36,7 @@ public class FacturaController {
 		 
 	}  
 	
-	// Recuperar una sola
+	// Busca la factura por id
 	@GetMapping("/factura/{id}")
 	public ResponseEntity<Factura> buscarFacturaPorId(@PathVariable Long id) {
 		
@@ -46,20 +50,16 @@ public class FacturaController {
 		
 	}
 	
-	// Crear nueva factura
+	// Crea una nueva factura
 	@PostMapping("/facturas")
 	public ResponseEntity<Factura> crearNuevaFactura(@RequestBody Factura factura) {
-		
-		try {
-			Factura facturaCreada = service.create(factura);
-			return ResponseEntity.ok(facturaCreada);
-		}catch(Exception e){
-			return ResponseEntity.badRequest().build();
-		}
-		 
-	}
+        Factura nuevaFactura = service.create(factura);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaFactura); // 
+    }
 	
-	// Actualizar la factura
+		 
+	
+	// Actualiza la factura
 	@PostMapping("/factura/{id}")
 	public ResponseEntity<Factura> actualizarFactura(@PathVariable Long id, @RequestBody Factura factura) {
 		Factura facturaDesdeServicio = service.getById(id);
@@ -77,7 +77,7 @@ public class FacturaController {
 		 
 	}
 	
-	// Eliminar la factura
+	// Elimina la factura
 	@DeleteMapping("/factura/{id}")
 	public ResponseEntity<?> borrarFactura(@PathVariable Long id) {
 		Factura factura = service.getById(id);
