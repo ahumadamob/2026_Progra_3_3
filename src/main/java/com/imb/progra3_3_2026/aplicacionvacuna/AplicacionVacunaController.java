@@ -1,12 +1,13 @@
 package com.imb.progra3_3_2026.aplicacionvacuna;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/aplicacionesvacuna")
+@RequestMapping("/api/aplicaciones-vacuna")
 public class AplicacionVacunaController {
 
     @Autowired
@@ -18,8 +19,10 @@ public class AplicacionVacunaController {
     }
 
     @GetMapping("/{id}")
-    public Optional<AplicacionVacuna> getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<AplicacionVacuna> getById(@PathVariable Long id) {
+        return service.getById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -28,12 +31,13 @@ public class AplicacionVacunaController {
     }
 
     @PutMapping("/{id}")
-    public AplicacionVacuna update(@PathVariable Long id, @RequestBody AplicacionVacuna aplicacionVacuna) {
-        return service.update(id, aplicacionVacuna);
+    public AplicacionVacuna update(@PathVariable Long id, @RequestBody AplicacionVacuna datos) {
+        return service.update(id, datos);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
