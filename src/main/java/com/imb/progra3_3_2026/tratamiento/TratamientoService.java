@@ -35,6 +35,8 @@ public class TratamientoService {
 
 
 	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}}
+		if (repo.existsById(id)) {
+			repo.deleteById(id);
+		}
+	}
+}
