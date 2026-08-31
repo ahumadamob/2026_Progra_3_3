@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "aplicacion_vacuna")
 public class AplicacionVacuna {
 
     @Id
@@ -19,60 +20,24 @@ public class AplicacionVacuna {
 
     public AplicacionVacuna() {}
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getVacuna() { return vacuna; }
+    public void setVacuna(String vacuna) { this.vacuna = vacuna; }
 
-    public String getVacuna() {
-        return vacuna;
-    }
+    public String getMascota() { return mascota; }
+    public void setMascota(String mascota) { this.mascota = mascota; }
 
-    public void setVacuna(String vacuna) {
-        this.vacuna = vacuna;
-    }
+    public String getVeterinario() { return veterinario; }
+    public void setVeterinario(String veterinario) { this.veterinario = veterinario; }
 
-    public String getMascota() {
-        return mascota;
-    }
+    public LocalDate getFechaAplicacion() { return fechaAplicacion; }
+    public void setFechaAplicacion(LocalDate fechaAplicacion) { this.fechaAplicacion = fechaAplicacion; }
 
-    public void setMascota(String mascota) {
-        this.mascota = mascota;
-    }
+    public LocalDate getProximaDosis() { return proximaDosis; }
+    public void setProximaDosis(LocalDate proximaDosis) { this.proximaDosis = proximaDosis; }
 
-    public String getVeterinario() {
-        return veterinario;
-    }
-
-    public void setVeterinario(String veterinario) {
-        this.veterinario = veterinario;
-    }
-
-    public LocalDate getFechaAplicacion() {
-        return fechaAplicacion;
-    }
-
-    public void setFechaAplicacion(LocalDate fechaAplicacion) {
-        this.fechaAplicacion = fechaAplicacion;
-    }
-
-    public LocalDate getProximaDosis() {
-        return proximaDosis;
-    }
-
-    public void setProximaDosis(LocalDate proximaDosis) {
-        this.proximaDosis = proximaDosis;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 }
-
