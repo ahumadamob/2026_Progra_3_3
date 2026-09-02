@@ -3,19 +3,13 @@ package com.imb.progra3_3_2026.diagnostico;
 import java.time.LocalDateTime;
 
 import com.imb.progra3_3_2026.consulta.Consulta;
+import com.imb.progra3_3_2026.utils.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
-public class Diagnostico {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Diagnostico extends BaseEntity {
 	@ManyToOne
 	private Consulta consulta;
 	
@@ -24,14 +18,6 @@ public class Diagnostico {
 	private LocalDateTime fechaDeteccion;
 	private String observaciones;
 	
-
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public Consulta getConsulta() {
 		return consulta;
 	}
