@@ -24,7 +24,7 @@ public class ProveedorService {
 		
 	}
 	
-	public Proveedor update(Proveedor proveedor, Long id) {
+	public Proveedor update(Long id, Proveedor proveedor) {
 		Proveedor actualizarProveedor = this.getById(id);
 		if(actualizarProveedor == null) {
 			return null;

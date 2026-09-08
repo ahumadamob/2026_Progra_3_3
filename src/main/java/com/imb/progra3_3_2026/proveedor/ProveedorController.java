@@ -1,15 +1,16 @@
 package com.imb.progra3_3_2026.proveedor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,78 +20,68 @@ public class ProveedorController {
 	@Autowired
 	private ProveedorService service;
 	
+	@Autowired
+	private ProveedorMapper mapper;
+	
 	// Recuperar todos los proveedores
-	@GetMapping("/proveedores")
-	public ResponseEntity<List<Proveedor>> buscarProveedor(){
+	@GetMapping("/api/proveedores")
+	public ResponseEntity<List<ProveedorResponseDTO>> buscarProveedor(){
 		List<Proveedor> proveedores = service.getAll();
 		if (proveedores.isEmpty()) {
 			return ResponseEntity.noContent().build();
 			
 		} 
-			return ResponseEntity.ok(proveedores);
+		List<ProveedorResponseDTO> dtos = proveedores.stream()
+				.map(mapper::toResponseDTO)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(dtos);
 		
 	}
 	
 	// Recuperar un solo preveedor
-	@GetMapping("/proveedor/{id}")
-	public ResponseEntity<Proveedor> buscarProveedorPorId(@PathVariable Long id) {
+	@GetMapping("/api/proveedores/{id}")
+	public ResponseEntity<ProveedorResponseDTO> buscarProveedorPorId(@PathVariable Long id) {
 		Proveedor proveedor =service.getById(id);
 		if (proveedor == null) {
 			 return ResponseEntity.notFound().build();
 		} 
 			
-			return ResponseEntity.ok(proveedor);
+		return ResponseEntity.ok(mapper.toResponseDTO(proveedor));
 		
 	}
 	
 	// Crear nuevo proveedor
-	@PostMapping("/proveedor")
-	public ResponseEntity<Proveedor> crearNuevoProveedor(@RequestBody Proveedor proveedor ) {
+	@PostMapping("/api/proveedores")
+	public ResponseEntity<ProveedorResponseDTO> crearNuevoProveedor(@RequestBody ProveedorRequestDTO requestDTO ) {
 		
 		
-		if (proveedor.getCuil() == null || proveedor.getRazonSocial()== null) {
+		if (requestDTO.getCuil() == null || requestDTO.getRazonSocial()== null) {
 			return ResponseEntity.badRequest().body(null);
 			
 		} 
-			Proveedor nuevo = service.create(proveedor);
-			
-			return new ResponseEntity<>(nuevo, HttpStatus.CREATED);
+		Proveedor proveedor = mapper.toEntity(requestDTO);
+		Proveedor nuevo = service.create(proveedor);
+		
+		return new ResponseEntity<>(mapper.toResponseDTO(nuevo), HttpStatus.CREATED);
 		
 	}
 	
 	// Actualizar proveedor
-	@PatchMapping("/proveedor/{id}")
-	public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor ) {
+	@PutMapping("/api/proveedores/{id}")
+	public ResponseEntity<ProveedorResponseDTO> actualizarProveedor(@PathVariable Long id, @RequestBody ProveedorRequestDTO requestDTO ) {
 		Proveedor existe = service.getById(id);
 		if (existe == null) {
 			return ResponseEntity.notFound().build();
 			
 		} 
-		if (proveedor.getCuil() != null) {
-			existe.setCuil(proveedor.getCuil());
-		} 
-		if (proveedor.getDireccion() != null) {
-			existe.setDireccion(proveedor.getDireccion());
-		} 
-		if (proveedor.getEmail() != null) {
-			existe.setEmail(proveedor.getEmail());
-		} 
-		if (proveedor.getRazonSocial() != null) {
-			existe.setRazonSocial(proveedor.getRazonSocial());
-		} 
-		if (proveedor.getRubro() != null) {
-			existe.setRubro(proveedor.getRubro());
-		} 
-		if (proveedor.getTelefono() != null) {
-			existe.setTelefono(proveedor.getTelefono());
-		} 
 		  
-			  Proveedor actualizar = service.update(existe, id);
-			return ResponseEntity.ok(actualizar);
+		Proveedor proveedorAActualizar = mapper.toEntity(requestDTO);
+		Proveedor actualizar = service.update(id, proveedorAActualizar);
+		return ResponseEntity.ok(mapper.toResponseDTO(actualizar));
 	}	
 	
 	// Eliminar proveedor
-	@DeleteMapping("/proveedor/{id}")
+	@DeleteMapping("/api/proveedores/{id}")
 	public ResponseEntity<Void> borrarProveedorPorId(@PathVariable Long id) {
 		Proveedor existe = service.getById(id);
 		if (existe == null) {
