@@ -4,20 +4,14 @@ import java.time.LocalDateTime;
 
 import com.imb.progra3_3_2026.insumoClinico.InsumoClinico;
 import com.imb.progra3_3_2026.proveedor.Proveedor;
+import com.imb.progra3_3_2026.utils.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class CompraInsumo {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class CompraInsumo extends BaseEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "proveedor_id")
@@ -33,12 +27,6 @@ public class CompraInsumo {
 	private String estado;
 	
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public Proveedor getProveedor() {
 		return proveedor;
 	}
