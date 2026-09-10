@@ -3,23 +3,17 @@ package com.imb.progra3_3_2026.mascota;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 import com.imb.progra3_3_2026.cliente.Cliente;
 import com.imb.progra3_3_2026.especie.Especie;
 import com.imb.progra3_3_2026.raza.Raza;
+import com.imb.progra3_3_2026.utils.BaseEntity;
 
 @Entity
-public class Mascota {
+public class Mascota extends BaseEntity {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	private String nombre;
 	@ManyToOne
 	@JoinColumn(name = "especie_id")
@@ -37,13 +31,7 @@ public class Mascota {
 	
 	public Mascota() {
 	}
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public String getNombre() {
 		return nombre;
 	}
