@@ -7,35 +7,35 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RazaService {
-	
+
 	@Autowired
 	private RazaRepository repo;
-	
-	public List<Raza> getALL(){
+
+	public List<Raza> getAll() {
 		return repo.findAll();
 	}
-	
+
 	public Raza getById(Long id) {
 		return repo.findById(id).orElse(null);
 	}
-	
+
 	public Raza create(Raza raza) {
 		return repo.save(raza);
 	}
-	
-	public Raza update(Raza raza, Long id) {
+
+	public Raza update(Long id, Raza raza) {
 		Raza actualizarRaza = this.getById(id);
-		if(actualizarRaza == null) {
+		if (actualizarRaza == null) {
 			return null;
-		}else {
+		} else {
 			raza.setId(id);
 			return repo.save(raza);
-		}	
-		
+		}
 	}
-	
-	public void delete(Long id){
+
+	public void delete(Long id) {
 		repo.deleteById(id);
 	}
 
 }
+

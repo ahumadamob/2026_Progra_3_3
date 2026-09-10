@@ -3,6 +3,7 @@ package com.imb.progra3_3_2026.raza;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,81 +11,78 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/razas")
 public class RazaController {
 
     @Autowired
     private RazaService service;
 
-    // Recuperar todas
-    @GetMapping("/razas")
-    public ResponseEntity<List<Raza>> buscarRaza() {
+    @Autowired
+    private RazaMapper mapper;
 
-        List<Raza> listaRaza = service.getALL();
+    @GetMapping
+    public ResponseEntity<List<RazaResponseDTO>> getAll() {
+        List<Raza> razas = service.getAll();
 
-        if (listaRaza.isEmpty()) {
+        if (razas.isEmpty()) {
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(listaRaza);
         }
+        return ResponseEntity.ok(mapper.toResponseDTOList(razas));
     }
 
-    // Recuperar una sola
-    @GetMapping("/razas/{id}")
-    public ResponseEntity<Raza> buscarRazaPorId(@PathVariable Long id) {
-
+    @GetMapping("/{id}")
+    public ResponseEntity<RazaResponseDTO> getById(@PathVariable Long id) {
         Raza raza = service.getById(id);
 
         if (raza == null) {
             return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(raza);
         }
+        return ResponseEntity.ok(mapper.toResponseDTO(raza));
     }
 
-    // Crear nueva raza
-    @PostMapping("/razas")
-    public ResponseEntity<Raza> crearNuevaRaza(@RequestBody Raza raza) {
-
+    @PostMapping
+    public ResponseEntity<RazaResponseDTO> create(@RequestBody RazaRequestDTO dto) {
         try {
-            Raza razaCreada = service.create(raza);
-            return ResponseEntity.ok(razaCreada);
+            Raza raza = mapper.toEntity(dto);
+            Raza nuevaRaza = service.create(raza);
+            return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDTO(nuevaRaza));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    // Actualizar raza
-    @PutMapping("/razas/{id}")
-    public ResponseEntity<Raza> actualizarRaza(@PathVariable Long id, @RequestBody Raza raza) {
+    @PutMapping("/{id}")
+    public ResponseEntity<RazaResponseDTO> update(@PathVariable Long id, @RequestBody RazaRequestDTO dto) {
+        Raza razaExistente = service.getById(id);
 
-        Raza razaDesdeServicio = service.getById(id);
-
-        if (razaDesdeServicio == null) {
+        if (razaExistente == null) {
             return ResponseEntity.notFound().build();
-        } else {
-            try {
-                Raza razaActualizada = service.update(raza, id);
-                return ResponseEntity.ok(razaActualizada);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().build();
-            }
+        }
+
+        try {
+            Raza razaParaActualizar = mapper.toEntity(dto);
+            Raza razaActualizada = service.update(id, razaParaActualizar);
+            return ResponseEntity.ok(mapper.toResponseDTO(razaActualizada));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 
-    // Eliminar raza
-    @DeleteMapping("/razas/{id}")
-    public ResponseEntity<?> borrarRaza(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        Raza razaExistente = service.getById(id);
 
-        Raza raza = service.getById(id);
-
-        if (raza == null) {
+        if (razaExistente == null) {
             return ResponseEntity.notFound().build();
-        } else {
-            service.delete(id);
-            return ResponseEntity.ok().build();
         }
+
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
+
