@@ -11,7 +11,7 @@ public class EspecieService {
 	@Autowired
 	private EspecieRepository repo;
 	
-	public List<Especie> getAll(){
+	public List<Especie> getAll() {
 		return repo.findAll();
 	}
 	
@@ -23,13 +23,13 @@ public class EspecieService {
 		return repo.save(especie);
 	}
 	
-	public Especie update(Especie especie,Long id) {
+	public Especie update(Long id, Especie especie) {
 		Especie actualizarEspecie = this.getById(id);
-		if(actualizarEspecie == null) {
+		if (actualizarEspecie == null) {
 			return null;
-		}else{
-		especie.setId(id);
-		return repo.save(especie);
+		} else {
+			especie.setId(id);
+			return repo.save(especie);
 		}
 	}
 	
