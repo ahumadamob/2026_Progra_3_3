@@ -3,19 +3,14 @@ package com.imb.progra3_3_2026.tratamiento;
 import java.time.LocalDateTime;
 
 import com.imb.progra3_3_2026.diagnostico.Diagnostico;
+import com.imb.progra3_3_2026.utils.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Tratamiento {
+public class Tratamiento extends BaseEntity {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	private LocalDateTime fechaInicio;
 	private LocalDateTime fechaFinEstimada;
 	
@@ -25,12 +20,6 @@ public class Tratamiento {
 	private String descripcion; 
 	private String indicaciones;
 	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
 	public LocalDateTime getFechaInicio() {
 		return fechaInicio;
 	}
