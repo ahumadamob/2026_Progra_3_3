@@ -2,10 +2,14 @@ package com.imb.progra3_3_2026.factura;
 
 import java.time.LocalDate;
 
+import com.imb.progra3_3_2026.cliente.Cliente;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Factura {
@@ -14,21 +18,27 @@ public class Factura {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String cliente;
-	private LocalDate fechaEmision;
-	private double total;
-	private String estado;
-	private String medioPago;
+
+	// Muchas facturas pertenecen a un cliente
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false) // 
+    private Cliente cliente;
+    
+    private LocalDate fechaEmision;
+    private double total;
+    private String estado;
+    private String medioPago;
+    
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getCliente() {
+	public Cliente getCliente() {
 		return cliente;
 	}
-	public void setCliente(String cliente) {
+	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
 	public LocalDate getFechaEmision() {
@@ -56,6 +66,9 @@ public class Factura {
 		this.medioPago = medioPago;
 	}
 	
+    
+    
+	}
 	
 
-}
+

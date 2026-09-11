@@ -11,31 +11,31 @@ public class TurnoService {
     @Autowired
     private TurnoRepository repository;
 
-    public List<Turno> obtenerTodos() {
+    public List<Turno> getAll() {
         return repository.findAll();
     }
 
-    public Turno obtenerPorId(Long id) {
+    public Turno getById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    public Turno guardar(Turno turno) {
-        return repository.save(turno);
+    public Turno create(Turno entity) {
+        return repository.save(entity);
     }
 
-    public Turno actualizar(Long id, Turno turnoActualizado) {
+    public Turno update(Long id, Turno entity) {
 
         Turno turno = repository.findById(id).orElse(null);
 
         if (turno != null) {
 
-            turno.setFecha(turnoActualizado.getFecha());
-            turno.setHora(turnoActualizado.getHora());
-            turno.setCliente(turnoActualizado.getCliente());
-            turno.setMascota(turnoActualizado.getMascota());
-            turno.setVeterinario(turnoActualizado.getVeterinario());
-            turno.setMotivo(turnoActualizado.getMotivo());
-            turno.setEstado(turnoActualizado.getEstado());
+            turno.setFecha(entity.getFecha());
+            turno.setHora(entity.getHora());
+            turno.setCliente(entity.getCliente());
+            turno.setMascota(entity.getMascota());
+            turno.setVeterinario(entity.getVeterinario());
+            turno.setMotivo(entity.getMotivo());
+            turno.setEstado(entity.getEstado());
 
             return repository.save(turno);
         }
@@ -43,7 +43,7 @@ public class TurnoService {
         return null;
     }
 
-    public void eliminar(Long id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 }

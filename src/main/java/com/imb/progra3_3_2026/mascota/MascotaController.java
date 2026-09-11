@@ -7,6 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 @RestController
 @RequestMapping("/api/mascotas")
 public class MascotaController {
@@ -15,29 +18,63 @@ public class MascotaController {
     private MascotaService service;
 
     @GetMapping
-    public List<Mascota> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<Mascota>> getAll() {
+
+        List<Mascota> mascotas = service.getAll();
+
+        if (mascotas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(mascotas);
     }
 
     @GetMapping("/{id}")
-    public Optional<Mascota> getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ResponseEntity<Mascota> getById(@PathVariable Long id) {
+
+        Optional<Mascota> mascota = service.getById(id);
+
+        if (mascota.isPresent()) {
+            return ResponseEntity.ok(mascota.get());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public Mascota create(@RequestBody Mascota mascota) {
-        return service.create(mascota);
+    public ResponseEntity<Mascota> create(@RequestBody Mascota mascota) {
+
+        Mascota nuevaMascota = service.create(mascota);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaMascota);
     }
 
     @PutMapping("/{id}")
-    public Mascota update(@PathVariable Long id,
-                          @RequestBody Mascota mascota) {
+    public ResponseEntity<Mascota> update(@PathVariable Long id,
+                                          @RequestBody Mascota mascota) {
 
-        return service.update(id, mascota);
+        Optional<Mascota> existente = service.getById(id);
+
+        if (existente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Mascota mascotaActualizada = service.update(id, mascota);
+
+        return ResponseEntity.ok(mascotaActualizada);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+
+        Optional<Mascota> mascota = service.getById(id);
+
+        if (mascota.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

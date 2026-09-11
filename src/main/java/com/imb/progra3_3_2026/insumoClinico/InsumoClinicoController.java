@@ -21,8 +21,12 @@ public class InsumoClinicoController {
     private InsumoClinicoService service;
 
     @GetMapping
-    public List<InsumoClinico> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<InsumoClinico>> getAll() {
+        List<InsumoClinico> insumos = service.getAll();
+        if (insumos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(insumos);
     }
 
     @GetMapping("/{id}")
@@ -33,8 +37,9 @@ public class InsumoClinicoController {
     }
 
     @PostMapping
-    public InsumoClinico create(@RequestBody InsumoClinico insumo) {
-        return service.create(insumo);
+    public ResponseEntity<InsumoClinico> create(@RequestBody InsumoClinico insumo) {
+        InsumoClinico nuevo = service.create(insumo);
+        return ResponseEntity.ok(nuevo);
     }
 
     @PutMapping("/{id}")

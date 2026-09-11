@@ -2,10 +2,13 @@ package com.imb.progra3_3_2026.diagnostico;
 
 import java.time.LocalDateTime;
 
+import com.imb.progra3_3_2026.consulta.Consulta;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 
 @Entity
@@ -13,7 +16,9 @@ public class Diagnostico {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String consulta;
+	@ManyToOne
+	private Consulta consulta;
+	
 	private String descripcion;
 	private String gravedad;
 	private LocalDateTime fechaDeteccion;
@@ -27,10 +32,10 @@ public class Diagnostico {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getConsulta() {
+	public Consulta getConsulta() {
 		return consulta;
 	}
-	public void setConsulta(String consulta) {
+	public void setConsulta(Consulta consulta) {
 		this.consulta = consulta;
 	}
 	public String getDescripcion() {

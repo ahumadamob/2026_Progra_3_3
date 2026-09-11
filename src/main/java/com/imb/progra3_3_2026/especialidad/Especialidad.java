@@ -15,7 +15,7 @@ public class Especialidad {
 	private String nombre;
 	private String descripcion;
 	private String areaClinica; 
-	private boolean requiereMatriculaEspecial;
+	private Boolean requiereMatriculaEspecial;
 	
 	public Especialidad() {
 
@@ -53,11 +53,11 @@ public class Especialidad {
 		this.areaClinica = areaClinica;
 	}
 
-	public boolean isRequiereMatriculaEspecial() {
+	public Boolean getRequiereMatriculaEspecial() {
 		return requiereMatriculaEspecial;
 	}
 
-	public void setRequiereMatriculaEspecial(boolean requiereMatriculaEspecial) {
+	public void setRequiereMatriculaEspecial(Boolean requiereMatriculaEspecial) {
 		this.requiereMatriculaEspecial = requiereMatriculaEspecial;
 	}
 	
