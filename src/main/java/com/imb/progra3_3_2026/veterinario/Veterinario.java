@@ -2,22 +2,16 @@ package com.imb.progra3_3_2026.veterinario;
 
 
 import com.imb.progra3_3_2026.especialidad.Especialidad;
+import com.imb.progra3_3_2026.utils.BaseEntity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 
 
 @Entity
-public class Veterinario {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Veterinario extends BaseEntity {
 	private String nombre;
 	private String apellido;
 	private String matricula;
@@ -30,12 +24,6 @@ public class Veterinario {
 	
 	public Veterinario() {
 		
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id=id;
 	}
 	public String getNombre() {
 		return nombre;
