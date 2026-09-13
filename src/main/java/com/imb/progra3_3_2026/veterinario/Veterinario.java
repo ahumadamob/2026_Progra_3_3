@@ -1,34 +1,29 @@
 package com.imb.progra3_3_2026.veterinario;
 
 
+import com.imb.progra3_3_2026.especialidad.Especialidad;
+import com.imb.progra3_3_2026.utils.BaseEntity;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 
 
 @Entity
-public class Veterinario {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Veterinario extends BaseEntity {
 	private String nombre;
 	private String apellido;
 	private String matricula;
 	private String telefono;
 	private String email;
-	private String especialidad;
+	
+	@ManyToOne
+	@JoinColumn( name= "especialidad_id")
+	private Especialidad especialidad;
 	
 	public Veterinario() {
 		
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id=id;
 	}
 	public String getNombre() {
 		return nombre;
@@ -60,10 +55,10 @@ public class Veterinario {
 	public void setEmail(String email) {
 		this.email=email;
 	}
-	public String getEspecialidad() {
+	public Especialidad getEspecialidad() {
 		return especialidad;
 	}
-	public void setEspecialidad(String especialidad) {
+	public void setEspecialidad(Especialidad especialidad) {
 		this.especialidad=especialidad;
 	}
 	

@@ -24,7 +24,7 @@ public class VeterinarioService {
 		return repo.save(veterinario);
 	}
 	
-	public Veterinario update(Veterinario veterinario, Long id) {
+	public Veterinario update(Long id, Veterinario veterinario) {
 		Veterinario actualizarVeterinario = this.getById(id);
 		if(actualizarVeterinario == null) {
 			return null;
