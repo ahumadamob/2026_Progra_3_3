@@ -1,15 +1,11 @@
 package com.imb.progra3_3_2026.proveedor;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import com.imb.progra3_3_2026.utils.BaseEntity;
 
 @Entity
-public class Proveedor {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+public class Proveedor extends BaseEntity {
 	private String razonSocial;
 	private String cuil;
 	private String telefono;
@@ -21,13 +17,6 @@ public class Proveedor {
 		super();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getRazonSocial() {
 		return razonSocial;
