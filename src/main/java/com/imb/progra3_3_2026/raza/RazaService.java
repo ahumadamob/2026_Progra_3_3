@@ -5,11 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.imb.progra3_3_2026.especie.Especie;
+import com.imb.progra3_3_2026.especie.EspecieRepository;
+import com.imb.progra3_3_2026.exceptions.ResourceNotFoundException;
+
 @Service
 public class RazaService {
 
 	@Autowired
 	private RazaRepository repo;
+
+	@Autowired
+	private EspecieRepository especieRepository;
 
 	public List<Raza> getAll() {
 		return repo.findAll();
@@ -20,6 +27,7 @@ public class RazaService {
 	}
 
 	public Raza create(Raza raza) {
+		asociarEspecie(raza);
 		return repo.save(raza);
 	}
 
@@ -28,6 +36,7 @@ public class RazaService {
 		if (actualizarRaza == null) {
 			return null;
 		} else {
+			asociarEspecie(raza);
 			raza.setId(id);
 			return repo.save(raza);
 		}
@@ -35,6 +44,16 @@ public class RazaService {
 
 	public void delete(Long id) {
 		repo.deleteById(id);
+	}
+
+	private void asociarEspecie(Raza raza) {
+		if (raza.getEspecie() == null || raza.getEspecie().getId() == null) {
+			throw new ResourceNotFoundException("Debe proporcionar un ID de especie válido.");
+		}
+		Long especieId = raza.getEspecie().getId();
+		Especie especie = especieRepository.findById(especieId)
+				.orElseThrow(() -> new ResourceNotFoundException("Especie no encontrada con id: " + especieId));
+		raza.setEspecie(especie);
 	}
 
 }

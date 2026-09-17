@@ -46,13 +46,9 @@ public class RazaController {
 
     @PostMapping
     public ResponseEntity<RazaResponseDTO> create(@RequestBody RazaRequestDTO dto) {
-        try {
-            Raza raza = mapper.toEntity(dto);
-            Raza nuevaRaza = service.create(raza);
-            return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDTO(nuevaRaza));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Raza raza = mapper.toEntity(dto);
+        Raza nuevaRaza = service.create(raza);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDTO(nuevaRaza));
     }
 
     @PutMapping("/{id}")
@@ -63,13 +59,9 @@ public class RazaController {
             return ResponseEntity.notFound().build();
         }
 
-        try {
-            Raza razaParaActualizar = mapper.toEntity(dto);
-            Raza razaActualizada = service.update(id, razaParaActualizar);
-            return ResponseEntity.ok(mapper.toResponseDTO(razaActualizada));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Raza razaParaActualizar = mapper.toEntity(dto);
+        Raza razaActualizada = service.update(id, razaParaActualizar);
+        return ResponseEntity.ok(mapper.toResponseDTO(razaActualizada));
     }
 
     @DeleteMapping("/{id}")
