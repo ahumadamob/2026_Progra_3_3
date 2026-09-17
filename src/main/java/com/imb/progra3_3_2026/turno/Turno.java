@@ -1,12 +1,18 @@
 package com.imb.progra3_3_2026.turno;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import com.imb.progra3_3_2026.cliente.Cliente;
+import com.imb.progra3_3_2026.mascota.Mascota;
+import com.imb.progra3_3_2026.veterinario.Veterinario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Turno {
@@ -19,11 +25,17 @@ public class Turno {
 
     private LocalTime hora;
 
-    private String cliente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
-    private String mascota;
+    @ManyToOne
+    @JoinColumn(name = "mascota_id")
+    private Mascota mascota;
 
-    private String veterinario;
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id")
+    private Veterinario veterinario;
 
     private String motivo;
 
@@ -56,27 +68,27 @@ public class Turno {
         this.hora = hora;
     }
 
-    public String getCliente() {
+    public Cliente getCliente() {
         return cliente;
     }
 
-    public void setCliente(String cliente) {
+    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-    public String getMascota() {
+    public Mascota getMascota() {
         return mascota;
     }
 
-    public void setMascota(String mascota) {
+    public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }
 
-    public String getVeterinario() {
+    public Veterinario getVeterinario() {
         return veterinario;
     }
 
-    public void setVeterinario(String veterinario) {
+    public void setVeterinario(Veterinario veterinario) {
         this.veterinario = veterinario;
     }
 

@@ -21,26 +21,36 @@ public class InsumoClinicoController {
     private InsumoClinicoService service;
 
     @GetMapping
-    public List<InsumoClinico> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<InsumoClinicoResponseDTO>> getAll() {
+        List<InsumoClinico> insumos = service.getAll();
+        if (insumos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        List<InsumoClinicoResponseDTO> dtos = insumos.stream()
+                .map(InsumoClinicoMapper::toResponseDTO)
+                .toList();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InsumoClinico> getById(@PathVariable Long id) {
-        return service.getById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<InsumoClinicoResponseDTO> getById(@PathVariable Long id) {
+        InsumoClinico insumo = service.getById(id);
+        return ResponseEntity.ok(InsumoClinicoMapper.toResponseDTO(insumo));
     }
 
     @PostMapping
-    public InsumoClinico create(@RequestBody InsumoClinico insumo) {
-        return service.create(insumo);
+    public ResponseEntity<InsumoClinicoResponseDTO> create(@RequestBody InsumoClinicoRequestDTO request) {
+        InsumoClinico nuevo = service.create(InsumoClinicoMapper.toEntity(request));
+        InsumoClinico insumoCargado = service.getById(nuevo.getId());
+        return ResponseEntity.ok(InsumoClinicoMapper.toResponseDTO(insumoCargado));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InsumoClinico> update(@PathVariable Long id,
-                                                @RequestBody InsumoClinico insumo) {
-        return ResponseEntity.ok(service.update(id, insumo));
+    public ResponseEntity<InsumoClinicoResponseDTO> update(@PathVariable Long id,
+                                                @RequestBody InsumoClinicoRequestDTO request) {
+        service.update(id, InsumoClinicoMapper.toEntity(request));
+        InsumoClinico insumoCargado = service.getById(id);
+        return ResponseEntity.ok(InsumoClinicoMapper.toResponseDTO(insumoCargado));
     }
 
     @DeleteMapping("/{id}")

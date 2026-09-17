@@ -3,6 +3,7 @@ package com.imb.progra3_3_2026.veterinario;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,32 +20,65 @@ public class VeterinarioController {
 	private VeterinarioService service;
 	
 		// Recuperar todos los veterinarios
-		@GetMapping ("/api/veterinario")
-		public List<Veterinario> buscarVeterinarios(){
-			return service.getAll();
+		@GetMapping ("/veterinarios")
+		public ResponseEntity< List<Veterinario>> buscarVeterinarios(){
+				List <Veterinario> listaVeterinario = service.getAll();
+				if (listaVeterinario.isEmpty()) {
+					return ResponseEntity.noContent().build();
+				}else {
+					return ResponseEntity.ok(listaVeterinario);
+						
+				}
 		}
 		
 		// Recuperar un solo veterinario
-		@GetMapping("/api/veterinario/{id}")
-		public Veterinario buscarVeterinarioPorId(@PathVariable Long id) {
-			return service.getById(id);
+		@GetMapping("/veterinarios/{id}")
+		public ResponseEntity<Veterinario> buscarVeterinarioPorId(@PathVariable Long id) {
+			Veterinario veterinario = service.getById(id);
+			if (veterinario== null) {
+				return ResponseEntity.notFound().build();
+			}else {
+				return ResponseEntity.ok(veterinario);
+			}
 		}
 		
 		// Crear nuevo veterinario
-		@PostMapping ("/api/veterinario")
-		public Veterinario crearNuevoVeterinario(@RequestBody Veterinario veterinario ) {
-			return service.create(veterinario);
+		@PostMapping ("/veterinarios")
+		public ResponseEntity<Veterinario> crearNuevoVeterinario(@RequestBody Veterinario veterinario ) {
+			try {
+				Veterinario veterinarioCreado = service.create(veterinario);
+				return ResponseEntity.ok(veterinarioCreado);
+			}catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+			}
 		}
-		
 		// Actualizar veterinario
-		@PutMapping("/api/veterinario/{id}")
-		public Veterinario actualizarVeterinario(@PathVariable Long id, @RequestBody Veterinario veterinario ) {
-			return service.update(veterinario, id);
+		@PutMapping("/veterinarios/{id}")
+		public ResponseEntity<Veterinario> actualizarVeterinario(@PathVariable Long id, @RequestBody Veterinario veterinario ) {
+			Veterinario veterinarioDesdeServicio = service.getById(id);
+			if (veterinarioDesdeServicio == null) {
+				return ResponseEntity.notFound().build();
+			}else {
+				try {
+					Veterinario veterinarioActualizado = service.update(veterinario, id);
+					return ResponseEntity.ok(veterinarioActualizado);
+				}catch(Exception e) {
+					return ResponseEntity.badRequest().build();
+				}
+			}
+		
 		}	
 		
 		// Eliminar veterinario
-		@DeleteMapping("/api/veterinario/{id}")
-		public void borrarVeterinarioPorId(@PathVariable Long id) {
-			service.delete(id);
+		@DeleteMapping("/veterinarios/{id}")
+		public ResponseEntity<?> borrarVeterinarioPorId(@PathVariable Long id) {
+			
+			Veterinario veterinario = service.getById(id);
+			if (veterinario==null) {
+				return ResponseEntity.notFound().build();
+			}else {
+				service.delete(id);
+				return ResponseEntity.ok().build();
+			}
 		}
 }

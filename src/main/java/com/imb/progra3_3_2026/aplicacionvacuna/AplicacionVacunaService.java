@@ -2,6 +2,7 @@ package com.imb.progra3_3_2026.aplicacionvacuna;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +24,18 @@ public class AplicacionVacunaService {
         return repository.save(aplicacionVacuna);
     }
 
-    public AplicacionVacuna update(Long id, AplicacionVacuna aplicacionVacuna) {
-        aplicacionVacuna.setId(id);
-        return repository.save(aplicacionVacuna);
+    public AplicacionVacuna update(Long id, AplicacionVacuna datos) {
+        AplicacionVacuna existente = repository.findById(id)
+            .orElseThrow(() -> new RuntimeException("No encontrada con id: " + id));
+
+        existente.setVacuna(datos.getVacuna());
+        existente.setMascota(datos.getMascota());
+        existente.setVeterinario(datos.getVeterinario());
+        existente.setFechaAplicacion(datos.getFechaAplicacion());
+        existente.setProximaDosis(datos.getProximaDosis());
+        existente.setObservaciones(datos.getObservaciones());
+
+        return repository.save(existente);
     }
 
     public void delete(Long id) {

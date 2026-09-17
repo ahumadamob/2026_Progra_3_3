@@ -2,10 +2,14 @@ package com.imb.progra3_3_2026.consulta;
 
 import java.time.LocalDateTime;
 
+import com.imb.progra3_3_2026.mascota.Mascota;
+import com.imb.progra3_3_2026.veterinario.Veterinario;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Consulta {
@@ -14,8 +18,13 @@ public class Consulta {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private LocalDateTime fecha;
-	private String mascota;
-	private String veterinario;
+	
+	@ManyToOne
+	private Mascota mascota;
+	
+	@ManyToOne
+	private Veterinario veterinario;
+	
 	private String motivo; 
 	private String observaciones;
 	private double pesoRegistrado;
@@ -32,16 +41,16 @@ public class Consulta {
 	public void setFecha(LocalDateTime fecha) {
 		this.fecha = fecha;
 	}
-	public String getMascota() {
+	public Mascota getMascota() {
 		return mascota;
 	}
-	public void setMascota(String mascota) {
+	public void setMascota(Mascota mascota) {
 		this.mascota = mascota;
 	}
-	public String getVeterinario() {
+	public Veterinario getVeterinario() {
 		return veterinario;
 	}
-	public void setVeterinario(String veterinario) {
+	public void setVeterinario(Veterinario veterinario) {
 		this.veterinario = veterinario;
 	}
 	public String getMotivo() {

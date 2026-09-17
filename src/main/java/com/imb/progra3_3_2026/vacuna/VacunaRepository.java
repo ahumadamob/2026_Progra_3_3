@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VacunaRepository extends JpaRepository<Vacuna, Long> {
-
 }

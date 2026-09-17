@@ -7,6 +7,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
+import com.imb.progra3_3_2026.cliente.Cliente;
+import com.imb.progra3_3_2026.especie.Especie;
+import com.imb.progra3_3_2026.raza.Raza;
+
 @Entity
 public class Mascota {
 	
@@ -14,9 +21,17 @@ public class Mascota {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nombre;
-	private String especie;
-	private String raza; 
-	private String cliente;
+	@ManyToOne
+	@JoinColumn(name = "especie_id")
+	private Especie especie;
+
+	@ManyToOne
+	@JoinColumn(name = "raza_id")
+	private Raza raza;
+
+	@ManyToOne
+	@JoinColumn(name = "cliente_id")
+	private Cliente cliente;
 	private LocalDate fechaNacimiento;
 	private double peso;
 	
@@ -35,23 +50,26 @@ public class Mascota {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getEspecie() {
-		return especie;
+	public Especie getEspecie() {
+	    return especie;
 	}
-	public void setEspecie(String especie) {
-		this.especie = especie;
+
+	public void setEspecie(Especie especie) {
+	    this.especie = especie;
 	}
-	public String getRaza() {
-		return raza;
+	public Raza getRaza() {
+	    return raza;
 	}
-	public void setRaza(String raza) {
-		this.raza = raza;
+
+	public void setRaza(Raza raza) {
+	    this.raza = raza;
 	}
-	public String getCliente() {
-		return cliente;
+	public Cliente getCliente() {
+	    return cliente;
 	}
-	public void setCliente(String cliente) {
-		this.cliente = cliente;
+
+	public void setCliente(Cliente cliente) {
+	    this.cliente = cliente;
 	}
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;

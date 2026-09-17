@@ -1,9 +1,13 @@
 package com.imb.progra3_3_2026.raza;
 
+import com.imb.progra3_3_2026.especie.Especie;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Raza {
@@ -12,10 +16,13 @@ public class Raza {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nombre;
-	private String especie;
 	private double tamanioPromedio;
 	private double pesoPromedio;
 	private String observaciones;
+	@ManyToOne
+	@JoinColumn(name = "especie_id")
+	private Especie especie;
+	
 	public Long getId() {
 		return id;
 	}
@@ -28,11 +35,12 @@ public class Raza {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	public String getEspecie() {
-		return especie;
+	public Especie getEspecie() {
+	    return especie;
 	}
-	public void setEspecie(String especie) {
-		this.especie = especie;
+
+	public void setEspecie(Especie especie) {
+	    this.especie = especie;
 	}
 	public double getTamanioPromedio() {
 		return tamanioPromedio;

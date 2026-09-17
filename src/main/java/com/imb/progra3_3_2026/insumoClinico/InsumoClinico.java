@@ -1,18 +1,17 @@
 package com.imb.progra3_3_2026.insumoClinico;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.imb.progra3_3_2026.utils.BaseEntity;
+
+import com.imb.progra3_3_2026.proveedor.Proveedor;
 
 @Entity
 @Table(name = "insumo_clinico")
-public class InsumoClinico {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class InsumoClinico extends BaseEntity {
 
     private String nombre;
     private String tipo;
@@ -20,12 +19,14 @@ public class InsumoClinico {
     private Double costoEstimado;
     private Boolean requiereRefrigeracion;
 
-    // Constructor vacío 
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
+
+    // Constructor vacío
     public InsumoClinico() {}
 
     // Getters y Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -43,4 +44,7 @@ public class InsumoClinico {
     public void setRequiereRefrigeracion(Boolean requiereRefrigeracion) {
         this.requiereRefrigeracion = requiereRefrigeracion;
     }
+
+    public Proveedor getProveedor() { return proveedor; }
+    public void setProveedor(Proveedor proveedor) { this.proveedor = proveedor; }
 }

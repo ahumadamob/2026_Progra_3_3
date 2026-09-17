@@ -2,10 +2,15 @@ package com.imb.progra3_3_2026.compraInsumo;
 
 import java.time.LocalDateTime;
 
+import com.imb.progra3_3_2026.insumoClinico.InsumoClinico;
+import com.imb.progra3_3_2026.proveedor.Proveedor;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class CompraInsumo {
@@ -13,8 +18,15 @@ public class CompraInsumo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String proveedor;
-	private String insumoClinico;
+	
+	@ManyToOne
+	@JoinColumn(name = "proveedor_id")
+	private Proveedor proveedor;
+	
+	@ManyToOne
+	@JoinColumn(name = "insumoClinico_id")
+	private InsumoClinico insumoClinico;
+	
 	private LocalDateTime fechaCompra;
 	private int cantidad;
 	private double costoTotal;
@@ -27,16 +39,16 @@ public class CompraInsumo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getProveedor() {
+	public Proveedor getProveedor() {
 		return proveedor;
 	}
-	public void setProveedor(String proveedor) {
+	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
-	public String getInsumoClinico() {
+	public InsumoClinico getInsumoClinico() {
 		return insumoClinico;
 	}
-	public void setInsumoClinico(String insumoClinico) {
+	public void setInsumoClinico(InsumoClinico insumoClinico) {
 		this.insumoClinico = insumoClinico;
 	}
 	public LocalDateTime getFechaCompra() {
