@@ -4,13 +4,31 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.imb.progra3_3_2026.exceptions.ResourceNotFoundException;
 import com.imb.progra3_3_2026.insumoClinico.InsumoClinico;
+import com.imb.progra3_3_2026.insumoClinico.InsumoClinicoRepository;
 import com.imb.progra3_3_2026.proveedor.Proveedor;
+import com.imb.progra3_3_2026.proveedor.ProveedorRepository;
 
 @Component
 public class CompraInsumoMapper {
+
+    @Autowired
+    private ProveedorRepository proveedorRepository;
+
+    @Autowired
+    private InsumoClinicoRepository insumoClinicoRepository;
+
+    public CompraInsumoMapper() {
+    }
+
+    public CompraInsumoMapper(ProveedorRepository proveedorRepository, InsumoClinicoRepository insumoClinicoRepository) {
+        this.proveedorRepository = proveedorRepository;
+        this.insumoClinicoRepository = insumoClinicoRepository;
+    }
 
     public CompraInsumo toEntity(CompraInsumoRequestDTO dto) {
         if (dto == null) {
@@ -24,14 +42,14 @@ public class CompraInsumoMapper {
         entity.setEstado(dto.getEstado());
 
         if (dto.getProveedorId() != null) {
-            Proveedor proveedor = new Proveedor();
-            proveedor.setId(dto.getProveedorId());
+            Proveedor proveedor = proveedorRepository.findById(dto.getProveedorId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Proveedor no encontrado con ID: " + dto.getProveedorId()));
             entity.setProveedor(proveedor);
         }
 
         if (dto.getInsumoClinicoId() != null) {
-            InsumoClinico insumoClinico = new InsumoClinico();
-            insumoClinico.setId(dto.getInsumoClinicoId());
+            InsumoClinico insumoClinico = insumoClinicoRepository.findById(dto.getInsumoClinicoId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Insumo clínico no encontrado con ID: " + dto.getInsumoClinicoId()));
             entity.setInsumoClinico(insumoClinico);
         }
 
