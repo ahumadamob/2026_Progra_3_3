@@ -3,25 +3,27 @@ package com.imb.progra3_3_2026.tratamiento;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/tratamientos")
 public class TratamientoController {
 
 	@Autowired
 	private TratamientoService service;
 	
-	@GetMapping("/tratamientos")
-	public ResponseEntity <List<Tratamiento>> buscarTratamiento(){
-		List<Tratamiento> listaTratamiento = service.getAll();
+	@GetMapping
+	public ResponseEntity<List<TratamientoResponseDTO>> getAll() {
+		List<TratamientoResponseDTO> listaTratamiento = service.getAll();
 		if (listaTratamiento.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {
@@ -29,49 +31,40 @@ public class TratamientoController {
 		}
 	}
 	
-	@GetMapping("/tratamiento/{id}")
-	public ResponseEntity <Tratamiento> buscarTratamientoPorId(@PathVariable Long id) {
-		Tratamiento tratamiento = service.getById(id);
+	@GetMapping("/{id}")
+	public ResponseEntity<TratamientoResponseDTO> getById(@PathVariable Long id) {
+		TratamientoResponseDTO tratamiento = service.getById(id);
 		if (tratamiento == null) {
 			return ResponseEntity.notFound().build();
 		} else {
 			return ResponseEntity.ok(tratamiento);
 		}
-		
 	}
 	
-	@PostMapping("/tratamiento")
-	public ResponseEntity <Tratamiento> crearNuevoTratamiento(@RequestBody Tratamiento tratamiento ) {
-		try {
-			return ResponseEntity.ok(service.create(tratamiento));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+	@PostMapping
+	public ResponseEntity<TratamientoResponseDTO> create(@RequestBody TratamientoRequestDTO tratamientoDTO) {
+		TratamientoResponseDTO nuevoTratamiento = service.create(tratamientoDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTratamiento);
 	}
 	
-	@PutMapping("/tratamiento/{id}")
-	public ResponseEntity <Tratamiento> actualizarTratamiento(@PathVariable Long id, @RequestBody Tratamiento tratamiento ) {
-		Tratamiento tratamientoDesdeServicio = service.getById(id);
-		if (tratamientoDesdeServicio == null) {
+	@PutMapping("/{id}")
+	public ResponseEntity<TratamientoResponseDTO> update(@PathVariable Long id, @RequestBody TratamientoRequestDTO tratamientoDTO) {
+		TratamientoResponseDTO tratamientoActualizado = service.update(id, tratamientoDTO);
+		if (tratamientoActualizado == null) {
 			return ResponseEntity.notFound().build();
 		} else {
-			try {
-				Tratamiento tratamientoActualizado = service.update(tratamiento, id);
-			} catch (Exception e) {
-				return ResponseEntity.badRequest().build();
-			}
+			return ResponseEntity.ok(tratamientoActualizado);
 		}
-		return null;
 	}
 	
-	@DeleteMapping("/tratamientos/{id}")
-	public ResponseEntity<?> borrarTratamientoPorId(@PathVariable Long id) {
-		Tratamiento tratamiento = service.getById(id);
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		TratamientoResponseDTO tratamiento = service.getById(id);
 		if (tratamiento == null) {
 			return ResponseEntity.notFound().build();
 		} else {
 			service.delete(id);
-			return ResponseEntity.ok().build();
+			return ResponseEntity.noContent().build();
 		}
 	}
 }
