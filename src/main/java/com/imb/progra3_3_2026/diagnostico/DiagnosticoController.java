@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.imb.progra3_3_2026.exceptions.ResourceNotFoundException;
+
 @RestController
 @RequestMapping("/api/diagnosticos")
 public class DiagnosticoController {
@@ -47,8 +49,10 @@ public class DiagnosticoController {
 	public ResponseEntity<DiagnosticoResponseDTO> create(@RequestBody DiagnosticoRequestDTO requestDTO) {
 		try {
 			Diagnostico entidad = mapper.toEntity(requestDTO);
-			Diagnostico diagnosticoCreado = service.create(entidad);
+			Diagnostico diagnosticoCreado = service.create(entidad, requestDTO.getConsultaId());
 			return ResponseEntity.ok(mapper.toResponseDTO(diagnosticoCreado));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.notFound().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -62,8 +66,10 @@ public class DiagnosticoController {
 		} else {
 			try {
 				Diagnostico entidad = mapper.toEntity(requestDTO);
-				Diagnostico diagnosticoActualizado = service.update(id, entidad);
+				Diagnostico diagnosticoActualizado = service.update(id, entidad, requestDTO.getConsultaId());
 				return ResponseEntity.ok(mapper.toResponseDTO(diagnosticoActualizado));
+			} catch (ResourceNotFoundException e) {
+				return ResponseEntity.notFound().build();
 			} catch (Exception e) {
 				return ResponseEntity.badRequest().build();
 			}

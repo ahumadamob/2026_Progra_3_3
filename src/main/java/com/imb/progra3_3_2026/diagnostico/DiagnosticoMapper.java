@@ -21,12 +21,6 @@ public class DiagnosticoMapper {
         diagnostico.setFechaDeteccion(dto.getFechaDeteccion());
         diagnostico.setObservaciones(dto.getObservaciones());
 
-        if (dto.getConsultaId() != null) {
-            Consulta consulta = new Consulta();
-            consulta.setId(dto.getConsultaId());
-            diagnostico.setConsulta(consulta);
-        }
-
         return diagnostico;
     }
 
