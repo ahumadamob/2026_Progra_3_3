@@ -24,7 +24,7 @@ public class ServicioService {
 		return repo.save(servicio);
 	}
 	
-	public Servicio update(Servicio servicio, Long id) {
+	public Servicio update(Long id, Servicio servicio) {
 		Servicio actualizarServicio = this.getById(id);
 		if(actualizarServicio == null) {
 			return null;

@@ -11,7 +11,7 @@ public class MedicamentoService {
 	@Autowired
 	private MedicamentoRepository repo;
 	
-	public List <Medicamento> getAll(){
+	public List<Medicamento> getAll() {
 		return repo.findAll();
 	}
 	
@@ -19,13 +19,13 @@ public class MedicamentoService {
 		return repo.findById(id).orElse(null);
 	}
 	
-	public Medicamento create(Medicamento medicamento){
-		return repo.save(medicamento);
+	public Medicamento create(Medicamento entity) {
+		return repo.save(entity);
 	}
 	
-	public Medicamento update (Medicamento medicamento, Long id) {
-		medicamento.setId(id);
-		return repo.save(medicamento);
+	public Medicamento update(Long id, Medicamento entity) {
+		entity.setId(id);
+		return repo.save(entity);
 	}
 	
 	public void delete(Long id) {
