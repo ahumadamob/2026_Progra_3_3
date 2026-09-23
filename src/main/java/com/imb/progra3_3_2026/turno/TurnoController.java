@@ -8,61 +8,66 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/turnos")
+@RequestMapping("/api/v1/turnos")
 public class TurnoController {
 
     @Autowired
     private TurnoService service;
 
-    @GetMapping
-    public ResponseEntity<List<Turno>> obtenerTodos() {
+    @Autowired
+    private TurnoMapper mapper;
 
-        List<Turno> turnos = service.obtenerTodos();
+    @GetMapping
+    public ResponseEntity<List<TurnoResponseDTO>> getAll() {
+
+        List<Turno> turnos = service.getAll();
 
         if (turnos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(turnos);
+        return ResponseEntity.ok(mapper.toResponseDTOList(turnos));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Turno> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<TurnoResponseDTO> getById(@PathVariable Long id) {
 
-        Turno turno = service.obtenerPorId(id);
+        Turno turno = service.getById(id);
 
         if (turno == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(turno);
+        return ResponseEntity.ok(mapper.toResponseDTO(turno));
     }
 
     @PostMapping
-    public ResponseEntity<Turno> crear(@RequestBody Turno turno) {
+    public ResponseEntity<TurnoResponseDTO> create(@RequestBody TurnoRequestDTO requestDTO) {
 
-        Turno nuevoTurno = service.guardar(turno);
+        Turno turno = mapper.toEntity(requestDTO);
+        Turno nuevoTurno = service.create(turno);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoTurno);
+        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponseDTO(nuevoTurno));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Turno> actualizar(@PathVariable Long id,
-                                            @RequestBody Turno turno) {
+    public ResponseEntity<TurnoResponseDTO> update(@PathVariable Long id,
+                                                   @RequestBody TurnoRequestDTO requestDTO) {
 
-        Turno turnoActualizado = service.actualizar(id, turno);
+        Turno turno = mapper.toEntity(requestDTO);
+        Turno turnoActualizado = service.update(id, turno);
 
         if (turnoActualizado == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(turnoActualizado);
+        return ResponseEntity.ok(mapper.toResponseDTO(turnoActualizado));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-        service.eliminar(id);
+        service.delete(id);
 
         return ResponseEntity.noContent().build();
     }
