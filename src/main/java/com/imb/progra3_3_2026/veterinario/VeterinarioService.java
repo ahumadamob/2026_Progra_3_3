@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class VeterinarioService {
 
@@ -24,9 +23,9 @@ public class VeterinarioService {
 		return repo.save(veterinario);
 	}
 	
-	public Veterinario update(Veterinario veterinario, Long id) {
+	public Veterinario update(Long id, Veterinario veterinario) {
 		Veterinario actualizarVeterinario = this.getById(id);
-		if(actualizarVeterinario == null) {
+		if (actualizarVeterinario == null) {
 			return null;
 		} else {
 			veterinario.setId(id);
@@ -37,7 +36,4 @@ public class VeterinarioService {
 	public void delete(Long id) {
 		repo.deleteById(id);
 	}
-
-	
-
 }
