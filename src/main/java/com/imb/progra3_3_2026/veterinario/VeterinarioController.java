@@ -50,13 +50,9 @@ public class VeterinarioController {
 	// Crear nuevo veterinario a partir de RequestDTO y devolver ResponseDTO
 	@PostMapping
 	public ResponseEntity<VeterinarioResponseDTO> create(@RequestBody VeterinarioRequestDTO requestDTO) {
-		try {
-			Veterinario entidad = mapper.toEntity(requestDTO);
-			Veterinario veterinarioCreado = service.create(entidad);
-			return new ResponseEntity<>(mapper.toResponseDTO(veterinarioCreado), HttpStatus.CREATED);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		Veterinario entidad = mapper.toEntity(requestDTO);
+		Veterinario veterinarioCreado = service.create(entidad);
+		return new ResponseEntity<>(mapper.toResponseDTO(veterinarioCreado), HttpStatus.CREATED);
 	}
 
 	// Actualizar veterinario a partir de RequestDTO y devolver ResponseDTO
@@ -66,13 +62,9 @@ public class VeterinarioController {
 		if (veterinarioExistente == null) {
 			return ResponseEntity.notFound().build();
 		}
-		try {
-			Veterinario entidad = mapper.toEntity(requestDTO);
-			Veterinario veterinarioActualizado = service.update(id, entidad);
-			return ResponseEntity.ok(mapper.toResponseDTO(veterinarioActualizado));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		Veterinario entidad = mapper.toEntity(requestDTO);
+		Veterinario veterinarioActualizado = service.update(id, entidad);
+		return ResponseEntity.ok(mapper.toResponseDTO(veterinarioActualizado));
 	}
 
 	// Eliminar veterinario (sin devolver ResponseDTO)
