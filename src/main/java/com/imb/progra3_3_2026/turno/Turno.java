@@ -5,21 +5,15 @@ import java.time.LocalTime;
 
 import com.imb.progra3_3_2026.cliente.Cliente;
 import com.imb.progra3_3_2026.mascota.Mascota;
+import com.imb.progra3_3_2026.utils.BaseEntity;
 import com.imb.progra3_3_2026.veterinario.Veterinario;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Turno {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Turno extends BaseEntity {
 
     private LocalDate fecha;
 
@@ -42,14 +36,6 @@ public class Turno {
     private String estado;
 
     public Turno() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public LocalDate getFecha() {
