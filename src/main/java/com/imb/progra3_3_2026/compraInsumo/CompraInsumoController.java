@@ -52,7 +52,7 @@ public class CompraInsumoController {
     public ResponseEntity<CompraInsumoResponseDTO> update(@PathVariable Long id,
             @RequestBody CompraInsumoRequestDTO requestDTO) {
         CompraInsumo entidad = mapper.toEntity(requestDTO);
-        CompraInsumo actualizado = service.update(id, entidad);
+        CompraInsumo actualizado = service.update(entidad, id);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }
